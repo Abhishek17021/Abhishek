@@ -17,7 +17,7 @@ namespace Abhishek.Data_Access_Layer.Data
         
         public List<Employee> GetAllEmployees()
         {
-            string ReadAllEmployee = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\EmployeeEntry.json");
+            string ReadAllEmployee = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\EmployeeEntry.json");
             return JsonSerializer.Deserialize<List<Employee>>(ReadAllEmployee);
         }   
            public Employee GetEmployee(int id)
@@ -29,7 +29,7 @@ namespace Abhishek.Data_Access_Layer.Data
 
         public bool Post(Employee employee)
         {
-            string ReadAllEmployee = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\EmployeeEntry.json");
+            string ReadAllEmployee = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\EmployeeEntry.json");
             var EmpUpdated=JsonSerializer.Deserialize<List<Employee>>(ReadAllEmployee);
 
             var empcheck = (from e in EmpUpdated where e.Name.Equals(employee.Name) select e).Count();
@@ -48,7 +48,7 @@ namespace Abhishek.Data_Access_Layer.Data
            EmpUpdated.Add(emp);
            
             string json = JsonSerializer.Serialize(EmpUpdated);
-                File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\EmployeeEntry.json", json);
+                File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\EmployeeEntry.json", json);
            
                 return true;
             

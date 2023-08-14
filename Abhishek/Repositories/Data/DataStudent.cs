@@ -15,7 +15,7 @@ namespace Abhishek.StudentData
 
         public List<Student> GetAllStudents()
         {
-            string ReadAllStudents = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\EmployeeEntry.json");
+            string ReadAllStudents = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\EmployeeEntry.json");
             return JsonSerializer.Deserialize<List<Student>>(ReadAllStudents);
         }
         public Student GetStudent(int rollnumber)
@@ -30,7 +30,7 @@ namespace Abhishek.StudentData
         public  bool Post(Student students)
         {
           
-            string ReadAllStudents = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\StudentEntry.json");
+            string ReadAllStudents = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\StudentEntry.json");
             var student=JsonSerializer.Deserialize<List<Student>>(ReadAllStudents);
 
             var stucheck = (from e in student where e.Name.Equals(students.Name) select e).Count();
@@ -50,7 +50,7 @@ namespace Abhishek.StudentData
             student.Add(stu);
 
             string json = JsonSerializer.Serialize(student);
-            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\StudentEntry.json", json);
+            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\StudentEntry.json", json);
              return true;
         }
           

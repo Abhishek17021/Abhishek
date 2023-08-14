@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Abhishek.Business_Logic_Layer;
-using Abhishek.Data_Access_Layer.Data;
+
 
 namespace Abhishek.Controllers
 {
