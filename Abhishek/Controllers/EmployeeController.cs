@@ -41,7 +41,7 @@ namespace Abhishek.Controllers
         [HttpGet("Student")]
         public List<Student> GetAllStudent()
         {
-            var fileStudent = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Data Access Layer\Data\StudentEntry.json");
+            var fileStudent = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\StudentEntry.json");
             return JsonSerializer.Deserialize<List<Student>>(fileStudent);
         }
         [HttpGet("Student/{id}")]
@@ -54,15 +54,15 @@ namespace Abhishek.Controllers
 
         }
 
-        //[HttpPost("Student")]
-        //public bool Post(Student students)
-        //{
-           //// if (ModelState.IsValid)
-           // {
-          //      return true;
-           /// }
-           // return _Studentservice.Post(students);
+        [HttpPost("student")]
+        public bool Post(Student students)
+        {
+            if (ModelState.IsValid)
 
+                return _Studentservice.Post(students);
+            return false;
         }
+
+    }
     }
 
