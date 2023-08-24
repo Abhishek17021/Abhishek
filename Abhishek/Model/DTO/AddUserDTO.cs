@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Abhishek.Model.DTO
 {
-    public class UserDTO
+    public class AddUserDTO
     {
         [Key]
+        public int Id { get; set; }
         public int UserId { get; set; }
-
-        public int ID { get; set; }
 
         [Required]
         [RegularExpression("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{6,15}", ErrorMessage = "The username Must be 6 to 15 characters in length, Must contain at least one letter and one number and a special character from !@#$%^&*()_+ ")]
@@ -19,13 +18,15 @@ namespace Abhishek.Model.DTO
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        
         [Required]
-
+        [EmailAddress(ErrorMessage = "Invalid Email Address, Please enter  Email address in the form of abc@domain.com).")]
         public string UserEmail { get; set; }
 
         [Required]
 
         public Role Role { get; set; }
         public Boolean IsStudent { get; set; }
+
     }
 }

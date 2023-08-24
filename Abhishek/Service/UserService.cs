@@ -1,6 +1,6 @@
 ﻿using Abhishek.Model.Domain;
 using Abhishek.Model.DTO;
-using Abhishek.Repositories.Data;
+using Abhishek.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -20,13 +20,27 @@ namespace Abhishek.Service
             return userdata.GetUserDetails();
         }
 
-        public ActionResult<Response<UserDTO>> GetUserDetailsById(int userid)
+        public ActionResult<Response<AddUserDTO>> GetUserDetailsById(int userid)
         {
+            if(userid < 0) {
+                return new Response<AddUserDTO>
+                {
+                    
+                    ErrorMessage = "User ID cannot be Zero, Please enter valid user id"               };
+            }
+            
             return userdata.GetUserDetailsById(userid);
         }
-        public ActionResult<Response<UserDTO>> AddUser(UserDTO userdto)
+        public ActionResult<Response<AddUserDTO>> AddUser(AddUserDTO userdto)
         {
-
+           if(userdto==null)
+            {
+                return new Response<AddUserDTO>
+                {
+                    ErrorMessage = "No Data Found"
+                };
+            }
+        
             
             return userdata.AddUser(userdto);
         }

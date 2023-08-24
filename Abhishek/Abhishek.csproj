@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Repositories\Data\UserData.cs~RF3bfa5e.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="repositories\data\UserDetails.json" />
-    <_ContentIncludedByDefault Remove="repositories\data\UserEntry.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>

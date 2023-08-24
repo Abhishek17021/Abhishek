@@ -3,7 +3,7 @@ using Abhishek.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace Abhishek.Repositories.Data
+namespace Abhishek.Repositories
 {
     public class UserData
     {
@@ -11,30 +11,30 @@ namespace Abhishek.Repositories.Data
 
         public List<User> GetAllUsers()
         {
-            string ReadAllUsers = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserEntry.json");
+            string ReadAllUsers = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json");
             return JsonSerializer.Deserialize<List<User>>(ReadAllUsers);
         }
 
         public ActionResult<Response<List<UserDetailsDTO>>> GetUserDetails()
         {
-            string ReadAllUsers = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserEntry.json");
+            string ReadAllUsers = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json");
             var user = JsonSerializer.Deserialize<List<User>>(ReadAllUsers);
             if (user.Count == 0)
             {
                 return new Response<List<UserDetailsDTO>>
                 {
-                    StatusMessage = "No recored found!."
+                    StatusMessage = "No users present!."
                 };
             }
             else
             {
-                string ReadAllUserDetails = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserDetails.json");
+                string ReadAllUserDetails = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserDetails.json");
                 var userdetails = JsonSerializer.Deserialize<List<UserDetails>>(ReadAllUserDetails);
                 if (userdetails.Count == 0)
                 {
                     return new Response<List<UserDetailsDTO>>
                     {
-                        StatusMessage = "No Data Found."
+                        StatusMessage = "No users data Found."
                     };
                 }
                 else
@@ -46,7 +46,7 @@ namespace Abhishek.Repositories.Data
                                   select new UserDetailsDTO()
                                   {
                                       UserId = item.UserId,
-
+                                      UserName= item.UserName,
                                       FirstName = itemdetails.FirstName,
                                       LastName = itemdetails.LastName,
                                       UserEmail = itemdetails.UserEmail,
@@ -77,16 +77,16 @@ namespace Abhishek.Repositories.Data
 
 
 
-        public ActionResult<Response<UserDTO>> AddUser(UserDTO userdto)
+        public ActionResult<Response<AddUserDTO>> AddUser(AddUserDTO userdto)
         {
-            string ReadAllUser = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserEntry.json");
+            string ReadAllUser = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json");
             var UserUpdated = JsonSerializer.Deserialize<List<User>>(ReadAllUser);
 
             var usercheck = (from e in UserUpdated where e.UserName.Equals(userdto.UserName) select e).Count();
             if (usercheck > 0)
-                return new Response<UserDTO>
+                return new Response<AddUserDTO>
                 {
-                   
+
                     StatusMessage = "User already exists"
                 };
             var maxIduser = (from e in UserUpdated orderby e.UserId descending select e.UserId).FirstOrDefault();
@@ -103,17 +103,17 @@ namespace Abhishek.Repositories.Data
             UserUpdated.Add(adduser);
 
             string json = JsonSerializer.Serialize(UserUpdated);
-            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserEntry.json", json);
+            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json", json);
 
-            string ReadAllUser1 = System.IO.File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserDetails.json");
+            string ReadAllUser1 = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserDetails.json");
             var UserUpdated1 = JsonSerializer.Deserialize<List<UserDetails>>(ReadAllUser1);
 
-            var maxId = (from e in UserUpdated1 orderby e.ID descending select e.ID).FirstOrDefault();
-            userdto.ID = maxId + 1;
+            var maxId = (from e in UserUpdated1 orderby e.Id descending select e.Id).FirstOrDefault();
+            userdto.Id = maxId + 1;
 
             var adduser2 = new UserDetails()
             {
-                ID = userdto.ID,
+                Id = userdto.Id,
                 UserId = userdto.UserId,
 
                 FirstName = userdto.FirstName,
@@ -126,9 +126,9 @@ namespace Abhishek.Repositories.Data
 
             UserUpdated1.Add(adduser2);
             string json1 = JsonSerializer.Serialize(UserUpdated1);
-            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserDetails.json", json1);
+            File.WriteAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserDetails.json", json1);
 
-            return new Response<UserDTO>
+            return new Response<AddUserDTO>
             {
                 Result = userdto,
                 StatusMessage = "Data has been added successfully!."
@@ -138,22 +138,22 @@ namespace Abhishek.Repositories.Data
 
 
 
-        public ActionResult<Response<UserDTO>> GetUserDetailsById(int userid)
+        public ActionResult<Response<AddUserDTO>> GetUserDetailsById(int userid)
         {
 
 
-            string userdetails = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserEntry.json");
+            string userdetails = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json");
             var users = JsonSerializer.Deserialize<List<User>>(userdetails);
             if (users.Count == 0)
             {
-                return new Response<UserDTO>
+                return new Response<AddUserDTO>
                 {
                     StatusMessage = "No Users present"
                 };
             }
             else
             {
-                string Details = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\Repositories\Data\UserDetails.json");
+                string Details = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserDetails.json");
                 var userdetails1 = JsonSerializer.Deserialize<List<UserDetails>>(Details);
                 if (userdetails1 != null)
                 {
@@ -161,7 +161,7 @@ namespace Abhishek.Repositories.Data
                     var result = (from item in users
                                   join itemDetail in userdetails1 on item.UserId equals itemDetail.UserId
 
-                                  select new UserDTO()
+                                  select new AddUserDTO()
                                   {
                                       UserName = item.UserName,
                                       Password = item.Password,
@@ -172,9 +172,9 @@ namespace Abhishek.Repositories.Data
                                       Role = itemDetail.Role,
                                       IsStudent = itemDetail.IsStudent,
                                   }).FirstOrDefault();
-                    if (result !=null)
+                    if (result != null)
                     {
-                        return new Response<UserDTO>
+                        return new Response<AddUserDTO>
                         {
                             Result = result,
                             StatusMessage = "Ok"
@@ -182,17 +182,17 @@ namespace Abhishek.Repositories.Data
                     }
                     else
                     {
-                        return new Response<UserDTO>
+                        return new Response<AddUserDTO>
                         {
-                            StatusMessage = "No Matching Records found"
+                            StatusMessage = "No Data found"
                         };
                     }
                 }
                 else
                 {
-                    return new Response<UserDTO>
+                    return new Response<AddUserDTO>
                     {
-                        StatusMessage = "No Matching Records found"
+                        StatusMessage = "No Data found"
                     };
                 }
             }
@@ -203,9 +203,9 @@ namespace Abhishek.Repositories.Data
 }
 
 
-  
 
-            
-        
-    
+
+
+
+
 
