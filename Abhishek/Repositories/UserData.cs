@@ -46,7 +46,7 @@ namespace Abhishek.Repositories
                                   select new UserDetailsDTO()
                                   {
                                       UserId = item.UserId,
-                                      UserName= item.UserName,
+                                      UserName = item.UserName,
                                       FirstName = itemdetails.FirstName,
                                       LastName = itemdetails.LastName,
                                       UserEmail = itemdetails.UserEmail,
@@ -90,11 +90,11 @@ namespace Abhishek.Repositories
                     StatusMessage = "User already exists"
                 };
             var maxIduser = (from e in UserUpdated orderby e.UserId descending select e.UserId).FirstOrDefault();
-            userdto.UserId = maxIduser + 1;
+            var IdUser = maxIduser + 1;
 
             var adduser = new User()
             {
-                UserId = userdto.UserId,
+                UserId = IdUser,
                 UserName = userdto.UserName,
                 Password = userdto.Password,
             };
@@ -109,12 +109,12 @@ namespace Abhishek.Repositories
             var UserUpdated1 = JsonSerializer.Deserialize<List<UserDetails>>(ReadAllUser1);
 
             var maxId = (from e in UserUpdated1 orderby e.Id descending select e.Id).FirstOrDefault();
-            userdto.Id = maxId + 1;
+            var IdEntry = maxId + 1;
 
             var adduser2 = new UserDetails()
             {
-                Id = userdto.Id,
-                UserId = userdto.UserId,
+                Id = IdEntry,
+                UserId = IdUser,
 
                 FirstName = userdto.FirstName,
                 LastName = userdto.LastName,
@@ -165,7 +165,7 @@ namespace Abhishek.Repositories
                                   {
                                       UserName = item.UserName,
                                       Password = item.Password,
-                                      UserId = item.UserId,
+                                      
                                       FirstName = itemDetail.FirstName,
                                       LastName = itemDetail.LastName,
                                       UserEmail = itemDetail.UserEmail,
@@ -198,7 +198,28 @@ namespace Abhishek.Repositories
             }
 
         }
+        public ActionResult<Response<UserLogin>> LoginUser(UserLogin userlogin)
+        {
+            string ReadAllUser = File.ReadAllText(@"C:\Users\parom\source\repos\Abhishek\Abhishek\JsonData\UserEntry.json");
+            var UserUpdated = JsonSerializer.Deserialize<List<User>>(ReadAllUser);
 
+            var usercheck = (from e in UserUpdated where e.UserName.Equals(userlogin.UserName) select e).Count();
+            if (usercheck > 0)
+            {
+                return new Response<UserLogin>
+                {
+                    StatusMessage = "User login successfull"
+                };
+            }
+            else
+            {
+                
+                return new Response<UserLogin>
+                {
+                    StatusMessage = "User credentials does not exist"
+                };
+            }
+    }
     }
 }
 

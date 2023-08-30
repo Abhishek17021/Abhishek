@@ -11,35 +11,40 @@ namespace Abhishek.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        UserService userService=new UserService();
-        
+        UserService userService = new UserService();
+
 
         [HttpGet]
         public List<User> GetAllUsers()
         {
-         return userService.GetAllUsers();
+            return userService.GetAllUsers();
         }
-          [HttpGet("UserDetails/{id}")]
-       public ActionResult<Response<AddUserDTO>> GetUserDetailsById(int userid)
-            {
-                 return userService.GetUserDetailsById(userid);
-            }
-         [HttpPost]
-             public ActionResult<Response<AddUserDTO>> AddUser(AddUserDTO userdto)
-             {
-                  return userService.AddUser(userdto);
+        [HttpGet("UserDetails/{id}")]
+        public ActionResult<Response<AddUserDTO>> GetUserDetailsById(int userid)
+        {
+            return userService.GetUserDetailsById(userid);
+        }
+        [HttpPost]
+        public ActionResult<Response<AddUserDTO>> AddUser(AddUserDTO userdto)
+        {
+            return userService.AddUser(userdto);
 
 
         }
 
         [HttpGet("UserDetails")]
-        public ActionResult <Response<List<UserDetailsDTO>>> GetUserDetails()
+        public ActionResult<Response<List<UserDetailsDTO>>> GetUserDetails()
         {
-           return userService.GetUserDetails();
+            return userService.GetUserDetails();
         }
-        
+        [HttpPost("UserLogin")]
+        public ActionResult<Response<UserLogin>> LoginUser(UserLogin userlogin)
+        {
+            return userService.LoginUser(userlogin);
+
+        }
+         
     }
-       
 }
 
 
