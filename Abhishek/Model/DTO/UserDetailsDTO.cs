@@ -10,7 +10,7 @@ namespace Abhishek.Model.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserEmail { get; set; }
-         public Role Role { get; set; }
+        public Role Role { get; set; }
         public Boolean IsStudent { get; set; }
         
         public int UserId { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Abhishek.Model.DTO
 {
-    public class AddUserDTO
+    public class AddUserDTO 
     {
         
 
