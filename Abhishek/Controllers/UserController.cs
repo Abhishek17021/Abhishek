@@ -16,12 +16,12 @@ namespace Abhishek.Controllers
 
         
         [HttpGet("UserDetails/id")]
-        public ActionResult<Response<AddUserDTO>> GetUserDetailsById(int userid)
+        public Response<UserDTO> GetUserDetailsById(int userid)
         {
             return userService.GetUserDetailsById(userid);
         }
         [HttpPost("UserDetails")]
-        public ActionResult<Response<AddUserDTO>> AddUserDetails(AddUserDTO userdto)
+        public ActionResult<Response<UserDTO>> AddUserDetails(UserDTO userdto)
         {
             return userService.AddUserDetails(userdto);
 
@@ -29,16 +29,11 @@ namespace Abhishek.Controllers
         }
 
         [HttpGet("UserDetails")]
-        public ActionResult<Response<List<T>>> GetUserDetails()
+        public Response<List<UserDetailsDTO>> GetUserDetails()
         {
             return userService.GetUserDetails();
         }
-        [HttpPost("UserLogin")]
-        public ActionResult<Response<UserLogin>> LoginUser(UserLogin userlogin)
-        {
-            return userService.LoginUser(userlogin);
-
-        }
+        
          
     }
 }
