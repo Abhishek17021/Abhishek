@@ -10,13 +10,13 @@ namespace Abhishek.Service
 {
     public class UserService 
     {
-        //SchoolRepository<T> schoolrepo = new SchoolRepository<T>();
+        
         public Response<List<UserDetailsDTO>> GetUserDetails()
         {
-            string ReadAllUsers = File.ReadAllText(@".\json\UserEntry.json");
-            var user = JsonSerializer.Deserialize<List<User>>(ReadAllUsers);
+            var genericUserObject = new SchoolRepository<User>();
+            var user = genericUserObject.Get(@".\Json\UserEntry.json");
 
-            if (user.Count == 0)
+            if (user == null)
             {
                 return new Response<List<UserDetailsDTO>>
                 {
@@ -26,9 +26,9 @@ namespace Abhishek.Service
             }
             else
             {
-                string ReadAllUserDetails = File.ReadAllText(@".\Json\UserDetails.json");
-                var userdetails = JsonSerializer.Deserialize<List<UserDetails>>(ReadAllUserDetails);
-                if (userdetails.Count == 0)
+                var genericUserDetailsObject = new SchoolRepository<UserDetails>();
+                var userdetails = genericUserDetailsObject.Get(@".\Json\UserDetails.json");
+                if (userdetails == null)
                 {
                     return new Response<List<UserDetailsDTO>>
                     {
@@ -81,11 +81,11 @@ namespace Abhishek.Service
 
         public Response<UserDTO> GetUserDetailsById(int userid)
         {
-            var genericUserOobject = new SchoolRepository<User>();
-            var users = genericUserOobject.ReadUsers(@".\Json\UserEntry.json");
+            var genericUserObject = new SchoolRepository<User>();
+            var users = genericUserObject.Get(@".\Json\UserEntry.json");
             try
             {
-                if (users.Count == 0)
+                if (users == null)
                 {
                     return new Response<UserDTO>
                     {
@@ -95,7 +95,7 @@ namespace Abhishek.Service
                 else
                 {
                     var genericUserDetailsObject = new SchoolRepository<UserDetails>();
-                    var userdetails = genericUserDetailsObject.ReadUsers(@".\Json\UserDetails.json");
+                    var userdetails = genericUserDetailsObject.Get(@".\Json\UserDetails.json");
 
                     if (userdetails != null)
                     {
@@ -155,7 +155,7 @@ namespace Abhishek.Service
         {
 
             var genericUserOobject = new SchoolRepository<User>();
-            var UserUpdated = genericUserOobject.ReadUsers(@".\Json\UserEntry.json");
+            var UserUpdated = genericUserOobject.Get(@".\Json\UserEntry.json");
 
             var usercheck = (from e in UserUpdated where e.UserName.Equals(userdto.UserName) select e).Count();
 
@@ -179,10 +179,10 @@ namespace Abhishek.Service
 
             UserUpdated.Add(adduser);
 
-            genericUserOobject.SaveUser(@".\Json\UserEntry.json", UserUpdated);
+            genericUserOobject.Add(@".\Json\UserEntry.json", UserUpdated);
 
             var genericUserDetailsObject = new SchoolRepository<UserDetails>();
-            var UserUpdated1 = genericUserDetailsObject.ReadUsers(@".\Json\UserDetails.json");
+            var UserUpdated1 = genericUserDetailsObject.Get(@".\Json\UserDetails.json");
 
             var maxId = (from e in UserUpdated1 orderby e.Id descending select e.Id).FirstOrDefault();
             var IdEntry = maxId + 1;
@@ -201,7 +201,7 @@ namespace Abhishek.Service
 
 
             UserUpdated1.Add(adduser2);
-            genericUserDetailsObject.SaveUser(@".\Json\UserDetails.json", UserUpdated1);
+            genericUserDetailsObject.Add(@".\Json\UserDetails.json", UserUpdated1);
 
             return new Response<UserDTO>
             {

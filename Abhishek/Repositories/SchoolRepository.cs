@@ -6,14 +6,10 @@ namespace Abhishek.Repositories
 {
     public class SchoolRepository<T> : ISchoolRepository<T> where T : class
     {
-        public Response<T> GetUserDetailsById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
        
 
-        public List<T> ReadUsers(string path)
+        public List<T> Get(string path)
         {
             string ReadAllUsers = File.ReadAllText(path);
             return JsonSerializer.Deserialize<List<T>>(ReadAllUsers);
@@ -21,12 +17,16 @@ namespace Abhishek.Repositories
 
         
 
-        public void SaveUser(string path, List<T> ReadAllUsers)
+        public void Add(string path, List<T> ReadAllUsers)
         {
             string SaveUser = JsonSerializer.Serialize(ReadAllUsers);
             File.WriteAllText(path, SaveUser);
         }
 
-            
+        public List<T> GetById(string path, int id)
+        {
+            string ReadAllUsers = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<List<T>>(ReadAllUsers);
+        }
     }
 }
