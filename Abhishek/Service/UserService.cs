@@ -11,7 +11,7 @@ namespace Abhishek.Service
     public class UserService 
     {
         
-        public Response<List<UserDetailsDTO>> GetUserDetails()
+        public  Response<List<UserDetailsDTO>> GetUserDetails()
         {
             var genericUserObject = new SchoolRepository<User>();
             var user = genericUserObject.Get(@".\Json\UserEntry.json");
@@ -79,7 +79,7 @@ namespace Abhishek.Service
         }
 
 
-        public Response<UserDTO> GetUserDetailsById(int userid)
+        public Response<UserDetailsDTO> GetUserDetailsById(int userid)
         {
             var genericUserObject = new SchoolRepository<User>();
             var users = genericUserObject.Get(@".\Json\UserEntry.json");
@@ -87,7 +87,7 @@ namespace Abhishek.Service
             {
                 if (users == null)
                 {
-                    return new Response<UserDTO>
+                    return new Response<UserDetailsDTO>
                     {
                         StatusMessage = "No Users present"
                     };
@@ -102,11 +102,12 @@ namespace Abhishek.Service
 
                         var result = (from item in users
                                       join itemDetail in userdetails on item.UserId equals itemDetail.UserId
+                                      where itemDetail.UserId == userid
 
-                                      select new UserDTO()
+                                      select new UserDetailsDTO()
                                       {
+                                          UserId = item.UserId,
                                           UserName = item.UserName,
-                                          Password = item.Password,
                                           FirstName = itemDetail.FirstName,
                                           LastName = itemDetail.LastName,
                                           UserEmail = itemDetail.UserEmail,
@@ -115,7 +116,7 @@ namespace Abhishek.Service
                                       }).FirstOrDefault();
                         if (result != null)
                         {
-                            return new Response<UserDTO>
+                            return new Response<UserDetailsDTO>
                             {
                                 Result = result,
                                 StatusMessage = "Ok"
@@ -125,7 +126,7 @@ namespace Abhishek.Service
 
                         else
                         {
-                            return new Response<UserDTO>
+                            return new Response<UserDetailsDTO>
                             {
                                 StatusMessage = "No Data found"
                             };
@@ -133,7 +134,7 @@ namespace Abhishek.Service
                     }
                     else
                     {
-                        return new Response<UserDTO>
+                        return new Response<UserDetailsDTO>
                         {
                             StatusMessage = "No Data found"
                         };

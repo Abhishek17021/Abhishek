@@ -9,11 +9,11 @@ namespace Abhishek.Service
     {
         UserLoginRepository userloginrepo =new UserLoginRepository();
 
-        public ActionResult<Response<UserLogin>> LoginUser(UserLogin userlogin)
+        public ActionResult<Response<LoginResponseDTO>> LoginUser(UserLogin userlogin)
         {
             if (userlogin == null)
             {
-                return new Response<UserLogin>
+                return new Response<LoginResponseDTO>
                 {
                     ErrorMessage = "User credentials provided doesnot exist"
                 };

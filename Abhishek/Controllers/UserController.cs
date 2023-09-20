@@ -16,7 +16,7 @@ namespace Abhishek.Controllers
 
         
         [HttpGet("UserDetails/id")]
-        public Response<UserDTO> GetUserDetailsById(int userid)
+        public Response<UserDetailsDTO> GetUserDetailsById(int userid)
         {
             return userService.GetUserDetailsById(userid);
         }

@@ -13,7 +13,7 @@ namespace Abhishek.Controllers
         UserLoginService userloginservice = new UserLoginService();
 
         [HttpPost]
-        public ActionResult<Response<UserLogin>> LoginUser(UserLogin userlogin)
+        public ActionResult<Response<LoginResponseDTO>> LoginUser(UserLogin userlogin)
         {
             return userloginservice.LoginUser(userlogin);
 
