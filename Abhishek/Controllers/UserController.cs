@@ -33,8 +33,15 @@ namespace Abhishek.Controllers
         {
             return userService.GetUserDetails();
         }
-        
-         
+        [HttpPost("ScoreList")]
+        public ActionResult<Response<ScoreDTO>> AddScoreDetails(ScoreDTO scoredto)
+        {
+            return userService.AddScoreDetails(scoredto);
+
+
+        }
+
+
     }
 }
 

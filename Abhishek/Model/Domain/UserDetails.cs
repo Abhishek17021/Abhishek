@@ -15,7 +15,7 @@ namespace Abhishek.Model.Domain
 
         [Required]
 
-        public Role Role { get; set; }
+        public string Role { get; set; }
         public bool IsStudent { get; set; }
         [ForeignKey("UserId")]
         public int UserId { get; set; }

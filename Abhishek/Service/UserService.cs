@@ -213,9 +213,62 @@ namespace Abhishek.Service
 
         }
 
-        
-    }
-        
+        public ActionResult<Response<ScoreDTO>> AddScoreDetails(ScoreDTO scoredto)
+        {
+
+            var genericUserOobject = new SchoolRepository<Subject>();
+            var UserUpdated = genericUserOobject.Get(@".\Json\Subject.json");
+            var maxIdsubject = (from e in UserUpdated orderby e.SubjectId descending select e.SubjectId).FirstOrDefault();
+            var IdSubject = maxIdsubject + 1;
+
+            var subcheck = 0;
+            foreach (var item in scoredto.scoreList)
+            {
+                subcheck = (from obj in UserUpdated where obj.SubjectName.Equals(item.subject) && obj.UserId.Equals(scoredto.UserId) select obj).Count();
+                if (subcheck == 0)
+                {
+                    
+                    var subject = new Subject()
+                    {
+                        SubjectId = IdSubject,
+                        SubjectName = item.subject,
+                        UserId = scoredto.UserId
+                    };
+                    UserUpdated.Add(subject);
+                    genericUserOobject.Add(@".\Json\Subject.json", UserUpdated);
+                }
+
+
+
+
+                var genericUserDetailsObject = new SchoolRepository<Grade>();
+                var UserUpdated1 = genericUserDetailsObject.Get(@".\Json\Grade.json");
+
+                var maxIdgrade = (from e in UserUpdated1 orderby e.GradeId descending select e.GradeId).FirstOrDefault();
+                var IdGrade = maxIdgrade + 1;
+                var grade = new Grade()
+                {
+                    GradeId = IdGrade,
+                    GradeName = item.grade,
+                    SubjectId = IdSubject
+                };
+                UserUpdated1.Add(grade);
+                genericUserDetailsObject.Add(@".\Json\Grade.json", UserUpdated1);
+            }
+
+            return new Response<ScoreDTO>
+            {
+                
+                StatusMessage = "Data has been added successfully!."
+            };
+
+
+        }
+
+
+
+        }
+
 
     }
 

@@ -23,7 +23,7 @@ namespace Abhishek.Model.DTO
 
         [Required]
 
-        public Role Role { get; set; }
+        public string  Role { get; set; }
         public Boolean IsStudent { get; set; }
 
     }
