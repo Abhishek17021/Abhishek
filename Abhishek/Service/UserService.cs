@@ -8,10 +8,10 @@ using System.Text.Json;
 
 namespace Abhishek.Service
 {
-    public class UserService 
+    public class UserService : IUserService
     {
-        
-        public  Response<List<UserDetailsDTO>> GetUserDetails()
+
+        public Response<List<UserDetailsDTO>> GetUserDetails()
         {
             var genericUserObject = new SchoolRepository<User>();
             var user = genericUserObject.Get(@".\Json\UserEntry.json");
@@ -121,7 +121,7 @@ namespace Abhishek.Service
                                 Result = result,
                                 StatusMessage = "Ok"
                             };
-                           
+
                         }
 
                         else
@@ -141,7 +141,7 @@ namespace Abhishek.Service
                     }
                 }
             }
-            
+
 
 
             catch (Exception ex)
@@ -151,8 +151,8 @@ namespace Abhishek.Service
         }
 
 
-    
-    public ActionResult<Response<UserDTO>> AddUserDetails(UserDTO userdto)
+
+        public Response<UserDTO> AddUserDetails(UserDTO userdto)
         {
 
             var genericUserOobject = new SchoolRepository<User>();
@@ -213,62 +213,73 @@ namespace Abhishek.Service
 
         }
 
-        public ActionResult<Response<ScoreDTO>> AddScoreDetails(ScoreDTO scoredto)
+        public Response<ScoreDTO> AddScoreDetails(ScoreDTO scoredto)
         {
 
-            var genericUserOobject = new SchoolRepository<Subject>();
-            var UserUpdated = genericUserOobject.Get(@".\Json\Subject.json");
-            var maxIdsubject = (from e in UserUpdated orderby e.SubjectId descending select e.SubjectId).FirstOrDefault();
-            var IdSubject = maxIdsubject + 1;
+            var genericUserObject = new SchoolRepository<Subject>();
+            var SubjectList = genericUserObject.Get(@".\Json\Subject.json");
+            var genericUserObject1 = new SchoolRepository<ScoreList>();
+            var ScoreLists = genericUserObject1.Get(@".\Json\Score.json");
+
 
             var subcheck = 0;
-            foreach (var item in scoredto.scoreList)
+
+
+            foreach (var item in scoredto.marksheet)
             {
-                subcheck = (from obj in UserUpdated where obj.SubjectName.Equals(item.subject) && obj.UserId.Equals(scoredto.UserId) select obj).Count();
+                subcheck = (from obj in SubjectList where obj.SubjectId.Equals(item.SubjectId) select obj).Count();
                 if (subcheck == 0)
                 {
-                    
+
+                    List<ScoreList.Marsksheet> markSheetList = new List<ScoreList.Marsksheet>();
+                    ScoreList.Marsksheet markSheet = new ScoreList.Marsksheet();
+                    markSheet.SubjectId = item.SubjectId;
+                    markSheet.GradeId = item.GradeId;
+                    markSheetList.Add(markSheet);
+                    ScoreList scorelist = new ScoreList()
+                    {
+                        UserId = scoredto.UserId,
+                        marksheet = markSheetList
+                    };
+
+                    ScoreLists.Add(scorelist);
+                    genericUserObject1.Add(@".\Json\Score.json", ScoreLists);
+
+
                     var subject = new Subject()
                     {
-                        SubjectId = IdSubject,
+                        SubjectId = item.SubjectId,
                         SubjectName = item.subject,
-                        UserId = scoredto.UserId
                     };
-                    UserUpdated.Add(subject);
-                    genericUserOobject.Add(@".\Json\Subject.json", UserUpdated);
+
+                    SubjectList.Add(subject);
+                    genericUserObject.Add(@".\Json\Subject.json", SubjectList);
+
+                    var genericUserObject2 = new SchoolRepository<Grade>();
+                    var GradeList = genericUserObject2.Get(@".\Json\Grade.json");
+                    var Grade = new Grade()
+                    {
+                        GradeId = item.GradeId,
+                        GradeName = item.grade,
+                    };
+
+                    GradeList.Add(Grade);
+                    genericUserObject2.Add(@".\Json\Grade.json", GradeList);
+
+
+                   
                 }
 
 
-
-
-                var genericUserDetailsObject = new SchoolRepository<Grade>();
-                var UserUpdated1 = genericUserDetailsObject.Get(@".\Json\Grade.json");
-
-                var maxIdgrade = (from e in UserUpdated1 orderby e.GradeId descending select e.GradeId).FirstOrDefault();
-                var IdGrade = maxIdgrade + 1;
-                var grade = new Grade()
-                {
-                    GradeId = IdGrade,
-                    GradeName = item.grade,
-                    SubjectId = IdSubject
-                };
-                UserUpdated1.Add(grade);
-                genericUserDetailsObject.Add(@".\Json\Grade.json", UserUpdated1);
             }
-
             return new Response<ScoreDTO>
             {
-                
-                StatusMessage = "Data has been added successfully!."
+                StatusMessage = "Scores addded succesfully"
             };
 
 
         }
-
-
-
-        }
-
-
     }
-
+        }
+    
+        

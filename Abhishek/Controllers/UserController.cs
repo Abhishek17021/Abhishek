@@ -11,19 +11,26 @@ namespace Abhishek.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        UserService userService = new UserService();
+       
+
+        IUserService _userService;
+
+        public UserController(IUserService userService) {
+            _userService = userService;
+        
+        }
 
 
         
         [HttpGet("UserDetails/id")]
         public Response<UserDetailsDTO> GetUserDetailsById(int userid)
         {
-            return userService.GetUserDetailsById(userid);
+            return _userService.GetUserDetailsById(userid);
         }
         [HttpPost("UserDetails")]
         public ActionResult<Response<UserDTO>> AddUserDetails(UserDTO userdto)
         {
-            return userService.AddUserDetails(userdto);
+            return _userService.AddUserDetails(userdto);
 
 
         }
@@ -31,12 +38,12 @@ namespace Abhishek.Controllers
         [HttpGet("UserDetails")]
         public Response<List<UserDetailsDTO>> GetUserDetails()
         {
-            return userService.GetUserDetails();
+            return _userService.GetUserDetails();
         }
         [HttpPost("ScoreList")]
         public ActionResult<Response<ScoreDTO>> AddScoreDetails(ScoreDTO scoredto)
         {
-            return userService.AddScoreDetails(scoredto);
+            return _userService.AddScoreDetails(scoredto);
 
 
         }

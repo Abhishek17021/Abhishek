@@ -6,6 +6,14 @@ namespace Abhishek.Model.DTO
     {
         public int UserId { get; set; }
 
-        public List<ScoreList> scoreList { get; set; }
-    }
+        public List<Marsksheet> marksheet { get; set; }
+
+        public class Marsksheet
+        {
+            public int SubjectId { get; set; }
+            public string subject { get; set; }
+            public string grade { get; set; }
+            public int GradeId { get; set; }
+        }
 }
+    }

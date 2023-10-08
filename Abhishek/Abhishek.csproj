@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="json\Score.json" />
     <_ContentIncludedByDefault Remove="json\Subject.json" />
   </ItemGroup>
 

@@ -8,7 +8,7 @@ namespace Abhishek.Model.Domain
         [Key]
         public int SubjectId { get; set; }
         public string SubjectName { get; set; }
-        [ForeignKey("UserId")]
-        public int UserId { get; set; }
+
+        public string SubjectDescription { get; set; }
     }
 }
