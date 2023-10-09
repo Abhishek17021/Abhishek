@@ -223,63 +223,113 @@ namespace Abhishek.Service
 
 
             var subcheck = 0;
-
-
-            foreach (var item in scoredto.marksheet)
+            var T = ScoreLists.FirstOrDefault(x => x.UserId == scoredto.UserId);
+            if (T == null)
             {
-                subcheck = (from obj in SubjectList where obj.SubjectId.Equals(item.SubjectId) select obj).Count();
-                if (subcheck == 0)
+
+                foreach (var item in scoredto.marksheet)
                 {
-
-                    List<ScoreList.Marsksheet> markSheetList = new List<ScoreList.Marsksheet>();
-                    ScoreList.Marsksheet markSheet = new ScoreList.Marsksheet();
-                    markSheet.SubjectId = item.SubjectId;
-                    markSheet.GradeId = item.GradeId;
-                    markSheetList.Add(markSheet);
-                    ScoreList scorelist = new ScoreList()
+                    subcheck = (from obj in SubjectList where obj.SubjectId.Equals(item.SubjectId) select obj).Count();
+                    if (subcheck == 0)
                     {
-                        UserId = scoredto.UserId,
-                        marksheet = markSheetList
-                    };
 
-                    ScoreLists.Add(scorelist);
-                    genericUserObject1.Add(@".\Json\Score.json", ScoreLists);
+                        List<ScoreList.Marsksheet> markSheetList = new List<ScoreList.Marsksheet>();
+                        ScoreList.Marsksheet markSheet = new ScoreList.Marsksheet();
+                        markSheet.SubjectId = item.SubjectId;
+                        markSheet.GradeId = item.GradeId;
+                        markSheetList.Add(markSheet);
+                        ScoreList scorelist = new ScoreList()
+                        {
+                            UserId = scoredto.UserId,
+                            marksheet = markSheetList
+                        };
 
-
-                    var subject = new Subject()
-                    {
-                        SubjectId = item.SubjectId,
-                        SubjectName = item.subject,
-                    };
-
-                    SubjectList.Add(subject);
-                    genericUserObject.Add(@".\Json\Subject.json", SubjectList);
-
-                    var genericUserObject2 = new SchoolRepository<Grade>();
-                    var GradeList = genericUserObject2.Get(@".\Json\Grade.json");
-                    var Grade = new Grade()
-                    {
-                        GradeId = item.GradeId,
-                        GradeName = item.grade,
-                    };
-
-                    GradeList.Add(Grade);
-                    genericUserObject2.Add(@".\Json\Grade.json", GradeList);
+                        ScoreLists.Add(scorelist);
+                        genericUserObject1.Add(@".\Json\Score.json", ScoreLists);
 
 
-                   
+                       
+                    }
+
                 }
+                if (subcheck > 0)
+                {
+                    return new Response<ScoreDTO>
+                    {
+                        StatusMessage = "Subject already added for the student."
+                    };
+                }
+
+                return new Response<ScoreDTO>
+                {
+                    StatusMessage = "Scores addded succesfully"
+                };
 
 
             }
-            return new Response<ScoreDTO>
+
+
+ else
             {
-                StatusMessage = "Scores addded succesfully"
-            };
+
+                foreach (var item in scoredto.marksheet)
+                {
+                    subcheck = (from obj in SubjectList where obj.SubjectId.Equals(item.SubjectId) select obj).Count();
+                    if (subcheck == 0)
+                    {
+
+                        List<ScoreList.Marsksheet> markSheetList = new List<ScoreList.Marsksheet>();
+                        ScoreList.Marsksheet markSheet = new ScoreList.Marsksheet();
+                        markSheet.SubjectId = item.SubjectId;
+                        markSheet.GradeId = item.GradeId;
+                        markSheetList.Add(markSheet);
+
+
+                        T.marksheet.Add(markSheet);
+                        genericUserObject1.Add(@".\Json\Score.json", ScoreLists);
+
+
+                        
+
+
+
+                    }
+
+                }
+
+
+                if (subcheck > 0)
+                {
+                    return new Response<ScoreDTO>
+                    {
+                        StatusMessage = "Subject already added for the student."
+                    };
+                }
+
+                return new Response<ScoreDTO>
+                {
+                    StatusMessage = "Scores addded succesfully"
+                };
+
+
+
+            }
+
 
 
         }
+
+
+
+
+
+
+
+
+
+
     }
-        }
+}
+        
     
         

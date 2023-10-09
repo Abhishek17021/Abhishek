@@ -1,1 +1,23 @@
-[{"GradeId":0,"GradeName":"A","GradeDescription":null}]
+[
+  {
+    "GradeId": 1,
+    "GradeName": "A",
+    "GradeDescription": null
+  },
+  {
+    "GradeId": 2,
+    "GradeName": "B",
+    "GradeDescription": null
+  },
+
+  {
+    "GradeId": 3,
+    "GradeName": "C",
+    "GradeDescription": null
+  },
+  {
+    "GradeId": 4,
+    "GradeName": "D",
+    "GradeDescription": null
+  }
+]
